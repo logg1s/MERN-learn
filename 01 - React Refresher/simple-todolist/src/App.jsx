@@ -6,23 +6,23 @@ import { useState } from "react";
 function App() {
   const [todoList, setTodoList] = useState([
     {
-      id: 1,
+      id: 'td1',
       title: "di hoc",
       completed: true,
     },
     {
-      id: 2,
+      id: 'td2',
       title: "di choi",
       completed: false,
     },
     {
-      id: 3,
+      id: 'td3',
       title: "Di ngu",
       completed: false,
     },
   ]);
 
-  const handleToggle = (id) => {
+  const handleToggle = id => {
     setTodoList(
       todoList.map((todo) => {
         if (todo.id === id) {
@@ -37,17 +37,23 @@ function App() {
   };
 
 
-  const onAddTodo = (newTodo) => {
+  const onAddTodo = newTodo => {
     setTodoList(prevTodoList => {
       return prevTodoList.concat(newTodo)
     })
+  }
+
+  const handleDelete = id => {
+    setTodoList(prevTodoList => {
+      return prevTodoList.filter(todo => todo.id !== id);
+    });
   }
 
   return (
     <div className="container">
       <h1>Simple TodoList</h1>
       <InputTodo onAddTodo={onAddTodo} />
-      <TodoItem data={todoList} onToggle={handleToggle} />
+      <TodoItem data={todoList} onToggle={handleToggle} onDelete= {handleDelete}/>
     </div>
   );
 

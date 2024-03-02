@@ -1,15 +1,22 @@
 import "./TodoItem.css";
 import PropTypes from "prop-types";
 
-function TodoItem({ data, onToggle }) {
-  const handleToggle = (id) => {
+function TodoItem({ data, onToggle, onDelete }) {
+  const handleToggle = id => {
     onToggle(id);
   };
+  const handleDelete = id => {
+    onDelete(id)
+  }
   return (
     <ul>
       {data.map((todo) => {
         return (
-          <li key={todo.id} onClick={() => handleToggle(todo.id)}>
+          <div key={todo.id}
+          style={
+            {display: 'flex', justifyContent: 'space-between', alignItems: 'center'}
+            }>
+          <li onClick={() => handleToggle(todo.id)}>
             <input
               type="checkbox"
               checked={todo.completed}
@@ -17,6 +24,8 @@ function TodoItem({ data, onToggle }) {
             />
             {todo.title}
           </li>
+          <a href="#" onClick={() => {handleDelete(todo.id)}}>Xoá</a>
+          </div>
         );
       })}
     </ul>
@@ -26,6 +35,7 @@ function TodoItem({ data, onToggle }) {
 TodoItem.propTypes = {
   data: PropTypes.array.isRequired,
   onToggle: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
 export default TodoItem;
