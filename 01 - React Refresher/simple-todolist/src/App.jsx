@@ -42,8 +42,6 @@ function App() {
       return prevTodoList.concat(newTodo)
     })
   }
-  
-  console.log(todoList)
 
   return (
     <div className="container">
