@@ -7,17 +7,17 @@ function App() {
   const [todoList, setTodoList] = useState([
     {
       id: 1,
-      title: "Take out the trash",
+      title: "di hoc",
       completed: true,
     },
     {
       id: 2,
-      title: "Dinner",
+      title: "di choi",
       completed: false,
     },
     {
       id: 3,
-      title: "Meeting with boss",
+      title: "Di ngu",
       completed: false,
     },
   ]);
@@ -36,13 +36,22 @@ function App() {
     );
   };
 
+
+  const onAddTodo = (newTodo) => {
+    setTodoList(prevTodoList => {
+      return prevTodoList.concat(newTodo)
+    })
+  }
+
   return (
     <div className="container">
-      <h1>Simple Todo List</h1>
-      <InputTodo />
+      <h1>Simple TodoList</h1>
+      <InputTodo onAddTodo={onAddTodo} />
       <TodoItem data={todoList} onToggle={handleToggle} />
     </div>
   );
+
+
 }
 
 export default App;
