@@ -9,7 +9,7 @@ function TodoItem({ data, onToggle }) {
     <ul>
       {data.map((todo) => {
         return (
-          <li key={todo.id}>
+          <li key={todo.id} onClick={() => handleToggle(todo.id)}>
             <input
               type="checkbox"
               checked={todo.completed}
