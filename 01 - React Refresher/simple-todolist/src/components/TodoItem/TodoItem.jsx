@@ -5,7 +5,8 @@ function TodoItem({ data, onToggle, onDelete }) {
   const handleToggle = id => {
     onToggle(id);
   };
-  const handleDelete = id => {
+  const handleDelete = (event, id) => {
+    event.preventDefault()
     onDelete(id)
   }
   return (
@@ -24,7 +25,7 @@ function TodoItem({ data, onToggle, onDelete }) {
             />
             {todo.title}
           </li>
-          <a href="#" onClick={() => {handleDelete(todo.id)}}>Xoá</a>
+          <a href="#" onClick={(event) => {handleDelete(event, todo.id)}}>Xoá</a>
           </div>
         );
       })}
