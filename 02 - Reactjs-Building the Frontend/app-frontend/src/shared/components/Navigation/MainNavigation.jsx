@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import MainHeader from './MainHeader'
 import './MainNavigation.css'
+import NavLinks from './NavLinks'
 
 
 function MainNavigation(props) {
@@ -16,7 +17,7 @@ function MainNavigation(props) {
             <Link to={'/'}>YourPlaces</Link>
         </h1>
         <nav>
-            ...
+            <NavLinks />
         </nav>
     </MainHeader>
   )
