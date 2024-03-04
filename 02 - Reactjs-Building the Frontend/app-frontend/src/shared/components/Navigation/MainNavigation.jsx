@@ -5,7 +5,7 @@ import NavLinks from './NavLinks'
 import SideDrawer from './SideDrawer'
 
 import './MainNavigation.css'
-import Backdrop from '../UIElements/Backdrop';
+import Backdrop from '../UIElements/Backdrop'
 
 function MainNavigation(props) {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false)
@@ -21,11 +21,11 @@ function MainNavigation(props) {
   return (
     <>
     {drawerIsOpen && <Backdrop onClick={closeDrawer}/>}
-    {drawerIsOpen && (<SideDrawer>
+    <SideDrawer show={drawerIsOpen} >
       <nav className="main-navigation__drawer-nav">
-        <NavLinks />
+        <NavLinks onClick={closeDrawer}/>
       </nav>
-    </SideDrawer>)}
+    </SideDrawer>
     <MainHeader>
         <button className='main-navigation__menu-btn' onClick={openDrawer}>
             <span />
@@ -36,7 +36,7 @@ function MainNavigation(props) {
             <Link to={'/'}>YourPlaces</Link>
         </h1>
         <nav className='main-navigation__header-nav'>
-            <NavLinks />
+            <NavLinks/>
         </nav>
     </MainHeader>
     </>

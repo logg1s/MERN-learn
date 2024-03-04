@@ -1,21 +1,23 @@
 import { NavLink } from 'react-router-dom'
 import './NavLinks.css'
 
+
 function NavLinks(props) {
+const navLink = (to, title) => <NavLink to={to} onClick={props.onClick}>{title}</NavLink>
   return (
     <ul className='nav-links'>
         <li>
-            <NavLink to={'/'}>ALL USERS</NavLink>
+            {navLink('/', 'ALL USERS')}
         </li>
         <li>
-            <NavLink to={'/u1/places'}>MY PLACES</NavLink>
+            {navLink('/u1/places', 'MY PLACES')}
         </li>
 
         <li>
-            <NavLink to={'/places/new'}>ADD PLACES</NavLink>
+            {navLink('/places/new', 'ADD PLACES')}
         </li>
         <li>
-            <NavLink to={'/auth'}>AUTHENTICATE</NavLink>
+            {navLink('/auth', 'AUTHENTICATE')}
         </li>
     </ul>
   )
