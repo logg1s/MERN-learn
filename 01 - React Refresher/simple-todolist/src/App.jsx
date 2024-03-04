@@ -1,26 +1,37 @@
 import InputTodo from "./components/InputTodo/InputTodo";
 import TodoItem from "./components/TodoItem/TodoItem";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
-  const [todoList, setTodoList] = useState([
-    {
-      id: 'td1',
-      title: "di hoc",
-      completed: true,
-    },
-    {
-      id: 'td2',
-      title: "di choi",
-      completed: false,
-    },
-    {
-      id: 'td3',
-      title: "Di ngu",
-      completed: false,
-    },
-  ]);
+  const [todoList, setTodoList] = useState(() => {
+    const savedTodos = localStorage.getItem("todos");
+    if (savedTodos != null) {
+      return JSON.parse(savedTodos);
+    } else {
+      return [
+        {
+          id: 'td1',
+          title: "di hoc",
+          completed: true,
+        },
+        {
+          id: 'td2',
+          title: "di choi",
+          completed: false,
+        },
+        {
+          id: 'td3',
+          title: "Di ngu",
+          completed: false,
+        },
+      ];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todoList));
+  }, [todoList]);
 
   const handleToggle = id => {
     setTodoList(
