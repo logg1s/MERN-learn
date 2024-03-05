@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Users from './users/pages/Users'
-import Places from './places/pages/Places'
+import UserPlaces from './places/pages/UserPlaces'
 import MainNavigation from './shared/components/Navigation/MainNavigation'
+import NewPlace from './places/pages/NewPlace'
 
 function App() {
 
@@ -13,7 +14,8 @@ function App() {
       <Routes>
         <Route path='/'>
           <Route index={true} element={<Users />}/>
-          <Route path='places' element={<Places />} />
+          <Route path=':userId/places' element={<UserPlaces />} />
+          <Route path='places/new' element={<NewPlace />} />
           </Route>
       </Routes>
     </main>

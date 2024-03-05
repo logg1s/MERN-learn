@@ -7,7 +7,7 @@ import SideDrawer from './SideDrawer'
 import './MainNavigation.css'
 import Backdrop from '../UIElements/Backdrop'
 
-function MainNavigation(props) {
+function MainNavigation() {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false)
 
   const openDrawer = () => {
