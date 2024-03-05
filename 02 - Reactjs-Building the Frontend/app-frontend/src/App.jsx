@@ -6,7 +6,6 @@ import NewPlace from './places/pages/NewPlace'
 
 function App() {
 
-
   return (
     <BrowserRouter>
     <MainNavigation />
