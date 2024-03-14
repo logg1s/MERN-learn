@@ -4,6 +4,7 @@ import UserPlaces from './places/pages/UserPlaces'
 import MainNavigation from './shared/components/Navigation/MainNavigation'
 import NewPlace from './places/pages/NewPlace'
 
+
 function App() {
 
   return (

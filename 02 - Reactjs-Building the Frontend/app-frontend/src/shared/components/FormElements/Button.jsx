@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+
+import { Link } from 'react-router-dom'
 
 import './Button.css'
 
@@ -13,7 +13,7 @@ function Button(props) {
       >
         {props.children}
       </a>
-    );
+    )
   }
   if (props.to) {
     return (
@@ -25,7 +25,7 @@ function Button(props) {
       >
         {props.children}
       </Link>
-    );
+    )
   }
   return (
     <button
@@ -37,7 +37,7 @@ function Button(props) {
     >
       {props.children}
     </button>
-  );
+  )
 }
 
-export default Button;
+export default Button

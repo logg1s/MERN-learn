@@ -3,6 +3,9 @@
 * {
   box-sizing: border-box;
 }
+#map {
+  height: 180px;
+}
 
 html {
   font-family: 'Open Sans', sans-serif;
