@@ -1,19 +1,55 @@
-import { BrowserRouter, Navigate, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, redirect } from 'react-router-dom'
 import Users from './users/pages/Users'
-import Places from './places/pages/Places'
+import UserPlaces from './places/pages/UserPlaces'
+import MainNavigation from './shared/components/Navigation/MainNavigation'
+import NewPlace from './places/pages/NewPlace'
+import UpdatePlace from './places/pages/UpdatePlace'
+import Auth from './users/pages/Auth'
+import { AuthContext } from './shared/context/auth-context'
+import { useCallback, useState } from 'react'
+
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const login = useCallback(() => {
+    setIsLoggedIn(true)
+  }, [])
 
+  const logout = useCallback(() => {
+    setIsLoggedIn(false)
+  }, [])
 
-  return (
-    <BrowserRouter>
+  let routes
+  if (isLoggedIn) {
+    routes = (
       <Routes>
-        <Route path='/'>
-          <Route index={true} element={<Users />}/>
-          <Route path='places' element={<Places />} />
-          <Route path='*' element={<Navigate to={'/'} />} />
+        <Route path="/">
+          <Route index element={<Users />} />
+          <Route path=":userId/places" element={<UserPlaces />} />
+          <Route path="places/new" element={<NewPlace />} />
+          <Route path="places/:placeId" element={<UpdatePlace />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    )
+  } else {
+    routes = (
+      <Routes>
+        <Route path="/" errorElement={<Auth />}>
+          <Route index path="/" element={<Users />} />
+          <Route path=":userId/places" element={<UserPlaces />} />
+          <Route path="auth" element={<Auth />} />
+        </Route>
+      </Routes>
+    )
+  }
+  return (
+    <AuthContext.Provider
+      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+    >
+      <BrowserRouter>
+        <MainNavigation />
+        <main>{routes}</main>
+      </BrowserRouter>
+    </AuthContext.Provider>
   )
 }
 
