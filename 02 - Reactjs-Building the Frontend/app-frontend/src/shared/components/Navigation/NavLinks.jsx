@@ -18,6 +18,11 @@ function NavLinks(props) {
 
       {auth.isLoggedIn && <li>{navLink('/places/new', 'ADD PLACES')}</li>}
       {!auth.isLoggedIn && <li>{navLink('/auth', 'AUTHENTICATE')}</li>}
+      {auth.isLoggedIn && (
+        <li>
+          <button onClick={auth.logout}>LOGOUT</button>
+        </li>
+      )}
     </ul>
   )
 }
