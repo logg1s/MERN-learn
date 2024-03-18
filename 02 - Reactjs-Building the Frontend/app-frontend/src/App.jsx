@@ -33,8 +33,8 @@ function App() {
   } else {
     routes = (
       <Routes>
-        <Route path="/" errorElement={<Auth />}>
-          <Route index path="/" element={<Users />} />
+        <Route path="/">
+          <Route index element={<Users />} />
           <Route path=":userId/places" element={<UserPlaces />} />
           <Route path="auth" element={<Auth />} />
         </Route>
