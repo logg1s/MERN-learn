@@ -8,9 +8,13 @@ const app = express()
 
 const placeRouter = require('./routes/place-routes')
 
+const userRouter = require('./routes/users-routes')
+
 app.use(bodyParser.json())
 
 app.use('/api/places', placeRouter)
+
+app.use('/api/users', userRouter)
 
 app.use(() => {
     throw new HttpError("Could not find resource.", 404)

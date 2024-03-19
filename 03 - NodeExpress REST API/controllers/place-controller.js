@@ -29,14 +29,14 @@ let DUMMY_PLACE = [
 ];
 
 function getAllPlace(req, res, next) {
-    res.status(200).json(DUMMY_PLACE)
+    res.json(DUMMY_PLACE)
 }
 
 function getPlaceById(req, res, next) {
   const placeId = req.params.pid;
   const place = DUMMY_PLACE.find((p) => p.id === placeId);
 
-  if (!place || place.length === 0) {
+  if (!place) {
     return next(new HttpError("Doesn't exist place", 404));
     }
      res.json({ place });
@@ -69,7 +69,7 @@ function updatePlace(req, res, next) {
     const updatedPlace = {...DUMMY_PLACE[placeIndex], title, description}
     DUMMY_PLACE[placeIndex] = updatedPlace
     
-    res.status(200).json({updatedPlace})
+    res.json({updatedPlace})
 }
 
 function deletePlace(req, res, next) {
@@ -82,7 +82,7 @@ function deletePlace(req, res, next) {
 
     DUMMY_PLACE.splice(placeIndex, 1)
     
-    res.status(200).json({message: "Delete success"})
+    res.json({message: "Delete success"})
 }
 
 module.exports = {
