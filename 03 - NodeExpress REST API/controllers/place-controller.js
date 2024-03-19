@@ -1,4 +1,5 @@
 const HttpError = require("../models/http-error");
+const { validationResult } = require('express-validator')
 const uuid = require("uuid");
 let DUMMY_PLACE = [
   {
@@ -29,17 +30,16 @@ let DUMMY_PLACE = [
 ];
 
 function getAllPlace(req, res, next) {
-    res.json(DUMMY_PLACE)
+  res.json(DUMMY_PLACE);
 }
 
 function getPlaceById(req, res, next) {
   const placeId = req.params.pid;
   const place = DUMMY_PLACE.find((p) => p.id === placeId);
-
   if (!place) {
     return next(new HttpError("Doesn't exist place", 404));
-    }
-     res.json({ place });
+  }
+  res.json({ place });
 }
 
 function getPlacesByUserId(req, res, next) {
@@ -47,49 +47,51 @@ function getPlacesByUserId(req, res, next) {
   const place = DUMMY_PLACE.filter((p) => p.creator === userId);
   if (!place || place.length === 0) {
     return next(new HttpError("Doesn't exist user", 404));
-}
- res.json({ place });
+  }
+  res.json({ place });
 }
 
 function createPlace(req, res, next) {
-  const createdPlace = {id: uuid.v4(), ...req.body };
+  const validResult = validationResult(req).array()
+  if (validResult.length !== 0) {
+    return res.status(400).json({errors: validResult})
+  }
+  const createdPlace = { id: uuid.v4(), ...req.body };
   DUMMY_PLACE.push(createdPlace);
-  res.status(201).json({ place: createdPlace});
+  res.status(201).json({ place: createdPlace });
 }
 
 function updatePlace(req, res, next) {
-    const placeId = req.params.pid
-    const {title, description} = req.body
-
-    const placeIndex = DUMMY_PLACE.findIndex(p => p.id === placeId)
-    if(placeIndex === -1) {
-        return next(new HttpError("Could not find this place", 403))
-    }
-
-    const updatedPlace = {...DUMMY_PLACE[placeIndex], title, description}
-    DUMMY_PLACE[placeIndex] = updatedPlace
-    
-    res.json({updatedPlace})
+  const validResult = validationResult(req).array()
+  if (validResult.length !== 0) {
+    return res.status(400).json({errors: validResult})
+  }
+  const placeId = req.params.pid;
+  const placeIndex = DUMMY_PLACE.findIndex((p) => p.id === placeId);
+  if (placeIndex === -1) {
+    return next(new HttpError("Could not find this place", 403));
+  }
+  const { title, description } = req.body;
+  const updatedPlace = { ...DUMMY_PLACE[placeIndex], title, description };
+  DUMMY_PLACE[placeIndex] = updatedPlace;
+  res.json({ updatedPlace });
 }
 
 function deletePlace(req, res, next) {
-    const placeId = req.params.pid
-
-    const placeIndex = DUMMY_PLACE.findIndex(p => p.id === placeId)
-    if(placeIndex === -1) {
-        return next(new HttpError("Could not find this place", 403))
-    }
-
-    DUMMY_PLACE.splice(placeIndex, 1)
-    
-    res.json({message: "Delete success"})
+  const placeId = req.params.pid;
+  const placeIndex = DUMMY_PLACE.findIndex((p) => p.id === placeId);
+  if (placeIndex === -1) {
+    return next(new HttpError("Could not find this place", 403));
+  }
+  DUMMY_PLACE.splice(placeIndex, 1);
+  res.json({ message: "Delete success" });
 }
 
 module.exports = {
-    getAllPlace,
-    getPlaceById,
-    getPlacesByUserId,
-    createPlace,
-    updatePlace,
-    deletePlace
+  getAllPlace,
+  getPlaceById,
+  getPlacesByUserId,
+  createPlace,
+  updatePlace,
+  deletePlace,
 };

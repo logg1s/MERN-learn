@@ -1,12 +1,16 @@
-const userControllers = require('../controllers/user-controller')
+const userControllers = require("../controllers/user-controller");
+const { check } = require('express-validator')
+const express = require("express");
+const router = express.Router();
 
-const express = require('express')
-const router = express.Router()
+router.get("/", userControllers.getUsers);
 
-router.get('/', userControllers.getUsers)
+router.post("/signup", [
+    check('name').notEmpty().withMessage('Name must not be empty'),
+    check('email').isEmail().withMessage("Not a valid Email"),
+    check('password').isLength({min: 6}).withMessage("Password must be at least 6 characters")
+] ,userControllers.signup);
 
-router.post('/signup', userControllers.signup)
+router.post("/login", userControllers.login);
 
-router.post('/login', userControllers.login)
-
-module.exports = router
+module.exports = router;

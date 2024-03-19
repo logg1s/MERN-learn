@@ -1,18 +1,23 @@
-const express = require('express')
-const router = express.Router()
-const placeControllers = require('../controllers/place-controller')
+const express = require("express");
+const { check } = require("express-validator");
+const router = express.Router();
+const placeControllers = require("../controllers/place-controller");
 
-router.get('/', placeControllers.getAllPlace)
+const validPlaceRule = [
+  check("title").notEmpty().withMessage("Title must not be empty"),
+  check("description").trim().isLength({ min: 5 }).withMessage("Description must be at least 5 characters"),
+];
 
-router.get('/:pid', placeControllers.getPlaceById)
+router.get("/", placeControllers.getAllPlace);
 
-router.get('/user/:uid', placeControllers.getPlacesByUserId)
+router.get("/:pid", placeControllers.getPlaceById);
 
-router.post('/', placeControllers.createPlace)
+router.get("/user/:uid", placeControllers.getPlacesByUserId);
 
-router.patch('/:pid', placeControllers.updatePlace)
+router.post("/", validPlaceRule, placeControllers.createPlace);
 
-router.delete('/:pid', placeControllers.deletePlace)
+router.patch("/:pid", validPlaceRule, placeControllers.updatePlace);
 
+router.delete("/:pid", placeControllers.deletePlace);
 
-module.exports = router
+module.exports = router;
