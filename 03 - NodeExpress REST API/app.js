@@ -30,6 +30,7 @@ mongoose.connect("mongodb+srv://lrng159:lrng159@cluster0.pvbymxp.mongodb.net/?re
     dbName: "mern_learn"
 }).then(() => {
     app.listen(8000)
+    console.log("MongoDB connected")
 }).catch(err => {
-    console.log(err)
+    console.error(err)
 })
