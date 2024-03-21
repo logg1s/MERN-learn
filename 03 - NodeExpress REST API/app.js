@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose')
 
 const HttpError = require('./models/http-error')
 
@@ -25,5 +26,8 @@ app.use((err, req, res, next) => {
 })
 
 
-
-app.listen(8000)
+mongoose.connect("mongodb+srv://lrng159:lrng159@cluster0.pvbymxp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(() => {
+    app.listen(8000)
+}).catch(err => {
+    console.log(err)
+})

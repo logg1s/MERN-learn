@@ -1,5 +1,6 @@
 const HttpError = require("../models/http-error");
-const { validationResult } = require('express-validator')
+const { validationResult } = require("express-validator");
+const getCoordsForAddress = require("../util/location");
 const uuid = require("uuid");
 let DUMMY_PLACE = [
   {
@@ -51,20 +52,39 @@ function getPlacesByUserId(req, res, next) {
   res.json({ place });
 }
 
-function createPlace(req, res, next) {
-  const validResult = validationResult(req).array()
+async function createPlace(req, res, next) {
+  const validResult = validationResult(req).array();
   if (validResult.length !== 0) {
-    return res.status(400).json({errors: validResult})
+    return res.status(400).json({ errors: validResult });
   }
-  const createdPlace = { id: uuid.v4(), ...req.body };
+  let coord;
+  try {
+    coord = await getCoordsForAddress(req.body.address)
+  } catch (error) {
+    return next(new HttpError("Can't get coordinates with API", 401))
+  }
+
+  if (coord.features.length === 0) {
+    return next(new HttpError("Can't get coordinates for this address", 403));
+  }
+
+  const createdPlace = {
+    ...req.body,
+    id: uuid.v4(),
+    location: {
+      lat: coord.features[0].properties.lat,
+      lng: coord.features[0].properties.lon,
+    },
+  };
+
   DUMMY_PLACE.push(createdPlace);
-  res.status(201).json({ place: createdPlace });
+  res.status(201).json({ place: createdPlace});
 }
 
 function updatePlace(req, res, next) {
-  const validResult = validationResult(req).array()
+  const validResult = validationResult(req).array();
   if (validResult.length !== 0) {
-    return res.status(400).json({errors: validResult})
+    return res.status(400).json({ errors: validResult });
   }
   const placeId = req.params.pid;
   const placeIndex = DUMMY_PLACE.findIndex((p) => p.id === placeId);
