@@ -26,7 +26,9 @@ app.use((err, req, res, next) => {
 })
 
 
-mongoose.connect("mongodb+srv://lrng159:lrng159@cluster0.pvbymxp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0").then(() => {
+mongoose.connect("mongodb+srv://lrng159:lrng159@cluster0.pvbymxp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+    dbName: "mern_learn"
+}).then(() => {
     app.listen(8000)
 }).catch(err => {
     console.log(err)
