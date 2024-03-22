@@ -31,6 +31,7 @@ mongoose.connect("mongodb+srv://lrng159:lrng159@cluster0.pvbymxp.mongodb.net/?re
 }).then(() => {
     app.listen(8000)
     console.log("MongoDB connected")
+    console.log("==================================")
 }).catch(err => {
     console.error(err)
 })

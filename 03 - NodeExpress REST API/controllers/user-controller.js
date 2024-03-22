@@ -5,7 +5,7 @@ const User = require("../models/users")
 async function getUsers(req, res, next) {
   let users
   try {
-     users = await User.find({}, "-password")
+     users = await User.find({}, "-password").populate("places", "-creator")
   } catch (error) {
     return next(new HttpError("Could not get users !", 500))
   }
@@ -17,7 +17,7 @@ async function signup(req, res, next) {
   if (validResult.length !== 0) {
      return res.status(400).json({errors: validResult})
   }
-  const { name, email, password, image, places } = req.body;
+  const { name, email, password, image } = req.body;
 
   let existingUser;
   try {
@@ -30,7 +30,7 @@ async function signup(req, res, next) {
     return next(new HttpError("User existing, please login !", 500));
   }
 
-  const newUser = new User({ name, email, password, image, places });
+  const newUser = new User({ name, email, password, image, places: [] });
   let result
   try {
     result = await newUser.save()
