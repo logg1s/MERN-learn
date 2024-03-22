@@ -11,7 +11,7 @@ async function getAllPlace(req, res, next) {
     places = await Place.find().populate("creator", "-password -places");
   } catch (err) {
     console.error(err)
-    return next(new HttpError("Could not get all place"), 500);
+    return next(new HttpError("Could not get all place", 500))
   }
   res.json(places);
 }
@@ -21,8 +21,9 @@ async function getPlaceById(req, res, next) {
   let place;
   try {
     place = await Place.findById(placeId).populate("creator", "-password -places");
-  } catch (err) {
-    return next(new HttpError("Could not get this place"), 500);
+  } catch (error) {
+    console.error(error)
+    return next(new HttpError("Could not get this place", 500))
   }
   res.json(place);
 }
@@ -32,8 +33,9 @@ async function getPlacesByUserId(req, res, next) {
   let places;
   try {
     places = await Place.find({ creator: userId }).populate("creator", "-password -places");
-  } catch (err) {
-    return next(new HttpError("Could not get places from this user !"), 500);
+  } catch (error) {
+    console.error(error)
+    return next(new HttpError("Could not get places from this user !", 500))
   }
   res.json(places);
 }
@@ -50,6 +52,7 @@ async function insertPlace(req, res, next) {
   try {
     coord = await getCoordsForAddress(address);
   } catch (error) {
+    console.error(error)
     return next(new HttpError("Can't get coordinates with API", 401));
   }
   if (coord.features.length === 0) {
@@ -60,6 +63,7 @@ async function insertPlace(req, res, next) {
   try {
     user = await Users.findById(creator)
   } catch (error) {
+    console.error(error)
     return next(new HttpError("Could not find this user !", 500))
   }
 
@@ -110,6 +114,7 @@ async function updatePlace(req, res, next) {
       { returnDocument: "after" }
     );
   } catch (error) {
+    console.error(error)
     return next(new HttpError("Could not update this place !", 500));
   }
   res.json(updatedPlace);
