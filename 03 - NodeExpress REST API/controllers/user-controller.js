@@ -7,6 +7,7 @@ async function getUsers(req, res, next) {
   try {
      users = await User.find({}, "-password").populate("places", "-creator")
   } catch (error) {
+    console.error(error)
     return next(new HttpError("Could not get users !", 500))
   }
   res.json(users);
@@ -23,6 +24,7 @@ async function signup(req, res, next) {
   try {
     existingUser = await User.findOne({email: email})
   } catch (error) {
+    console.error(error)
     return next(new HttpError("Sign-up failed !", 500))
   }
 
@@ -30,11 +32,12 @@ async function signup(req, res, next) {
     return next(new HttpError("User existing, please login !", 500));
   }
 
-  const newUser = new User({ name, email, password, image, places: [] });
+  const newUser = new User({ name, email, password, image: "https://lh3.googleusercontent.com/ogw/AF2bZyjF4idx4jq1VaVIYfaCBTwony-a0Vql5rBQoN4uUg=s64-c-mo", places: [] });
   let result
   try {
     result = await newUser.save()
   } catch (error) {
+    console.error(error)
     return next(new HttpError("Sign-up false, please try again !", 500))
   }
 
@@ -48,6 +51,7 @@ async function login(req, res, next) {
   try {
     account = await User.findOne({email})
   } catch (error) {
+    console.error(error)
     return next(new HttpError("Could not login, please try again !", 500))
   }
 
