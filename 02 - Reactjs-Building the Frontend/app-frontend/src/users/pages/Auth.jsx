@@ -42,23 +42,23 @@ function Auth() {
           'Content-Type': 'application/json'
         }
       )
-      responseData && auth.login()
+      responseData && auth.login(responseData.user._id)
     } else {
-        const responseData = await sendRequest(
-          'http://localhost:8000/api/users/signup',
-          'POST',
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value
-          }),
-          {
-            'Content-Type': 'application/json'
-          }
-        )
-        responseData && auth.login()
-      }
+      const responseData = await sendRequest(
+        'http://localhost:8000/api/users/signup',
+        'POST',
+        JSON.stringify({
+          name: formState.inputs.name.value,
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
+      )
+      responseData && auth.login(responseData.user._id)
     }
+  }
 
   const switchModeHandler = () => {
     if (!isLoginMode) {
