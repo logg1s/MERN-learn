@@ -1,5 +1,7 @@
+const fs = require('fs')
 const express = require('express')
 const mongoose = require('mongoose')
+const path = require('path')
 
 const HttpError = require('./models/http-error')
 
@@ -10,6 +12,8 @@ const app = express()
 const placeRouter = require('./routes/place-routes')
 
 const userRouter = require('./routes/users-routes')
+
+app.use('/uploads/images', express.static(path.join('uploads', 'images')))
 
 app.use(bodyParser.json())
 
@@ -31,6 +35,11 @@ app.use(() => {
 })
 
 app.use((err, req, res, next) => {
+    if(req.file) {
+        fs.unlinkSync(req.file.path, (err) => {
+            console.error(err.message)
+        })
+    }
     res.status(err.code || 500).json({message: err.message || "An error"})
 })
 
