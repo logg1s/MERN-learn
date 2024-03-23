@@ -16,7 +16,7 @@ async function getUsers(req, res, next) {
 async function signup(req, res, next) {
   const validResult = validationResult(req).array()
   if (validResult.length !== 0) {
-     return res.status(400).json({errors: validResult})
+     return res.status(400).json({errors: validResult, message: 'Please check your input data'})
   }
   const { name, email, password, image } = req.body;
 
