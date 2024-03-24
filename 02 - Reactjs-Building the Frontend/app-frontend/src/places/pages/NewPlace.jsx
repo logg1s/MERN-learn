@@ -50,7 +50,9 @@ function NewPlace() {
       formData.append('address', formState.inputs.address.value)
       formData.append('creator', auth.userId)
       formData.append('image', formState.inputs.image.value)
-      await sendRequest('http://localhost:8000/api/places', 'POST', formData)
+      await sendRequest('http://localhost:8000/api/places', 'POST', formData, {
+        Authorization: 'Bearer ' + auth.token
+      })
       navigate('/' + auth.userId + '/places')
     } catch (error) {
       console.error(error)

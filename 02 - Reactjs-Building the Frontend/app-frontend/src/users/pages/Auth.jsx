@@ -46,7 +46,7 @@ function Auth() {
         }
       )
       if (responseData) {
-        auth.login(responseData.user._id)
+        auth.login(responseData.userId, responseData.token)
         navigate('/')
       }
     } else {
@@ -61,7 +61,7 @@ function Auth() {
         formData
       )
       if (responseData) {
-        auth.login(responseData.user._id)
+        auth.login(responseData.userId, responseData.token)
         navigate('/')
       }
     }

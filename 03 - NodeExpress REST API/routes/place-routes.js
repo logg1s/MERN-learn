@@ -3,6 +3,7 @@ const { check } = require("express-validator");
 const router = express.Router();
 const placeControllers = require("../controllers/place-controller");
 const fileUpload = require("../middleware/file-upload");
+const checkAuth = require("../middleware/check-auth")
 
 const validPlaceRule = [
   check("title").trim().notEmpty().withMessage("Title must not be empty"),
@@ -20,6 +21,8 @@ router.get("/", placeControllers.getAllPlace);
 router.get("/:pid", placeControllers.getPlaceById);
 
 router.get("/user/:uid", placeControllers.getPlacesByUserId);
+
+router.use(checkAuth)
 
 router.post(
   "/",
