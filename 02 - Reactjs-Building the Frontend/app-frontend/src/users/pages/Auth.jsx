@@ -87,7 +87,7 @@ function Auth() {
           },
           image: {
             value: null,
-            isvalid: false
+            isValid: false
           }
         },
         false
@@ -116,7 +116,7 @@ function Auth() {
             />
           )}
           {!isLoginMode && (
-            <ImageUpload center id="image" onInput={inputHandler} />
+            <ImageUpload center id="image" onInput={inputHandler} errorText="Please provide an image." />
           )}
           <Input
             id="email"
@@ -133,15 +133,15 @@ function Auth() {
             type="password"
             label="Password"
             validators={[VALIDATOR_MINLENGTH(5)]}
-            errorText="Please enter a valid password (at least 5 chracters) !"
+            errorText="Please enter a valid password (at least 5 characters) !"
             onInput={inputHandler}
           />
           <Button type="submit" disabled={!formState.isValid}>
-            {isLoginMode ? 'LOGIN' : 'SIGNUP'}
+            {isLoginMode ? 'LOGIN' : 'SIGN UP'}
           </Button>
         </form>
         <Button inverse onClick={switchModeHandler}>
-          SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
+          SWITCH TO {isLoginMode ? 'SIGN UP' : 'LOGIN'}
         </Button>
       </Card>
     </>

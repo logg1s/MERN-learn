@@ -8,6 +8,7 @@ import { useHttpClient } from '../../shared/hooks/http-hook'
 import ErrorModal from '../../shared/components/UIElements/ErrorModal'
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner'
 import './PlaceItem.css'
+import { Link } from 'react-router-dom'
 
 function PlaceItem(props) {
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
@@ -73,7 +74,12 @@ function PlaceItem(props) {
         <Card className="place-item__content">
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="place-item__image">
-            <img src={props.image} alt={props.title} />
+            <Link to={`http://localhost:8000/${props.image}`}>
+              <img
+                src={`http://localhost:8000/${props.image}`}
+                alt={props.title}
+              />
+            </Link>
           </div>
           <div className="place-item__info">
             <h2>{props.title}</h2>
