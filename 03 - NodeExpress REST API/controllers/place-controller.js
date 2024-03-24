@@ -92,7 +92,7 @@ async function insertPlace(req, res, next) {
     await user.save({session: sess})
     await sess.commitTransaction()
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     return next(new HttpError("Could not save this place", 500));
   }
   res.status(201).json(createdPlace);
@@ -133,7 +133,6 @@ async function deletePlace(req, res, next) {
     user.places.pull(place)
     await user.save({session: sess})
     await sess.commitTransaction()
-    
     const imagePath = place.imageUrl
     fs.unlinkSync(imagePath, (err) => {
       throw new Error(err)
