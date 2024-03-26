@@ -99,47 +99,55 @@ async function insertPlace(req, res, next) {
 }
 
 async function updatePlace(req, res, next) {
+  
   const validResult = validationResult(req).array();
   if (validResult.length !== 0) {
     return next(new HttpError("Please check your input data"), 401);
   }
   const placeId = req.params.pid;
-  let updatedPlace;
+  let place;
   try {
-    updatedPlace = await Place.findByIdAndUpdate(
-      placeId,
-      {
-        title: req.body.title,
-        description: req.body.description,
-      },
-      { returnDocument: "after" }
-    );
+    place = await Place.findById(
+      placeId).populate("creator", "-places -password")
+    } catch (error) {
+      console.error(error)
+      return next(new HttpError("Could not find this place !", 500));
+    }
+  if(place.creator._id.toString() !== req.userData.userId) {
+
+    return next(new HttpError("You don't have permission to update this place !", 403))
+  }
+  place.title = req.body.title
+  place.description = req.body.description
+  let updatedPlace
+  try {
+    updatedPlace = place.save()
   } catch (error) {
-    console.error(error)
     return next(new HttpError("Could not update this place !", 500));
   }
-  res.json(updatedPlace);
-}
-
+    res.json(place);
+  }
+  
 async function deletePlace(req, res, next) {
-  const placeId = req.params.pid;
-
-
+  const placeId = mongoose.Types.ObjectId.createFromHexString(req.params.pid);
   try {
     const sess = await mongoose.startSession()
     await sess.startTransaction()
     const place = await Place.findByIdAndDelete(placeId, {session: sess}).populate("creator")
     const user = place.creator
+    if(user._id.toString() !== req.userData.userId){
+      sess.abortTransaction()
+      return next(new HttpError("You don't have permission to delete this place !", 403))
+    }
     user.places.pull(place)
     await user.save({session: sess})
     await sess.commitTransaction()
     const imagePath = place.imageUrl
-    fs.unlinkSync(imagePath, (err) => {
-      throw new Error(err)
+    fs.unlink(imagePath, () => {
     })
     
   } catch (error) {
-    console.error(error)
+    console.error("delete place: " + error.message)
     return next(new HttpError("Could not delete this place !", 500));
   }
   res.json({ message: "Delete success" });

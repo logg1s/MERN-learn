@@ -9,7 +9,7 @@ async function getUsers(req, res, next) {
   try {
      users = await User.find({}, "-password").populate("places", "-creator")
   } catch (error) {
-    console.error(error)
+    console.error("get user error: " + error.message)
     return next(new HttpError("Could not get users !", 500))
   }
   res.json(users);
@@ -27,7 +27,7 @@ async function signup(req, res, next) {
   try {
     existingUser = await User.findOne({email: email})
   } catch (error) {
-    console.error(error)
+    console.error("sign up error: " + error.message)
     return next(new HttpError("Sign-up failed !", 500))
   }
   
@@ -42,11 +42,11 @@ async function signup(req, res, next) {
     const newUser = new User({ name, email, password: hashPassword, image: req.file.path, places: [] });
     user = await newUser.save()
     token = jwt.sign({
-      userId: user._id,
+      userId: user._id.toString(),
       email: user.email
     }, "secret_key_he_he_ho_ho", {expiresIn: "1h"})
   } catch (error) {
-    console.error(error.message)
+    console.error("" + error.message)
     return next(new HttpError("Sign-up false, please try again !", 500))
   }
 
@@ -60,7 +60,7 @@ async function login(req, res, next) {
   try {
     user = await User.findOne({email})
     token = jwt.sign({
-      userId: user._id,
+      userId: user._id.toString(),
       email: user.email
     }, "secret_key_he_he_ho_ho", {expiresIn: "1h"})
   } catch (error) {
