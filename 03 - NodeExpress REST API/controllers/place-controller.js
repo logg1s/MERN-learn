@@ -18,7 +18,7 @@ async function getAllPlace(req, res, next) {
 }
 
 async function getPlaceById(req, res, next) {
-  const placeId = req.params.pid;
+  const placeId = mongoose.Types.ObjectId.createFromHexString(req.params.pid);
   let place;
   try {
     place = await Place.findById(placeId).populate("creator", "-password -places");
@@ -30,7 +30,7 @@ async function getPlaceById(req, res, next) {
 }
 
 async function getPlacesByUserId(req, res, next) {
-  const userId = req.params.uid;
+  const userId = mongoose.Types.ObjectId.createFromHexString(req.params.uid);
   let places;
   try {
     places = await Place.find({ creator: userId }).populate("creator", "-password -places");
@@ -42,12 +42,17 @@ async function getPlacesByUserId(req, res, next) {
 }
 
 async function insertPlace(req, res, next) {
+  if(!req?.file?.path) {
+    return next(new HttpError("No image for place !", 403))
+  }
+  const {title, description, address} = req.body
+
+
   const validResult = validationResult(req).array();
   if (validResult.length !== 0) {
     return next(new HttpError("Please check your input data"), 401);
   }
 
-  const {title, description, address, creator} = req.body
 
   let coord;
   try {
@@ -62,7 +67,7 @@ async function insertPlace(req, res, next) {
 
   let user
   try {
-    user = await Users.findById(creator)
+    user = await Users.findById(req.userData.userId)
   } catch (error) {
     console.error(error)
     return next(new HttpError("Could not find this user !", 500))
@@ -81,7 +86,7 @@ async function insertPlace(req, res, next) {
       lat: coord.features[0].properties.lat,
       lng: coord.features[0].properties.lon,
     },
-    creator
+    creator: req.userData.userId
   });
   let sess;
   try {
@@ -104,7 +109,7 @@ async function updatePlace(req, res, next) {
   if (validResult.length !== 0) {
     return next(new HttpError("Please check your input data"), 401);
   }
-  const placeId = req.params.pid;
+  const placeId = mongoose.Types.ObjectId.createFromHexString(req.params.pid);
   let place;
   try {
     place = await Place.findById(

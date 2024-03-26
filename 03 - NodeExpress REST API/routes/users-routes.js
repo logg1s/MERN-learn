@@ -3,6 +3,7 @@ const { check } = require("express-validator");
 const express = require("express");
 const fileUpload = require("../middleware/file-upload");
 const router = express.Router();
+const checkAuth = require("../middleware/check-auth")
 
 router.get("/", userControllers.getUsers);
 
@@ -20,5 +21,7 @@ router.post(
 );
 
 router.post("/login", userControllers.login);
+
+router.post("/checkValidToken", checkAuth, userControllers.checkValidToken)
 
 module.exports = router;

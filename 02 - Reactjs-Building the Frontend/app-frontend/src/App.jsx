@@ -6,27 +6,10 @@ import NewPlace from './places/pages/NewPlace'
 import UpdatePlace from './places/pages/UpdatePlace'
 import Auth from './users/pages/Auth'
 import { AuthContext } from './shared/context/auth-context'
-import { useCallback, useState } from 'react'
+import useAuth from './shared/hooks/auth-hook'
 
 function App() {
-  const [token, setToken] = useState(null)
-  const [userId, setUserId] = useState(false)
-  const login = useCallback((uid, token) => {
-    setToken(token)
-    setUserId(uid)
-    // localStorage.setItem(
-    //   'userData',
-    //   JSON.stringify({
-    //     userId: uid,
-    //     token
-    //   })
-    // )
-  }, [])
-
-  const logout = useCallback(() => {
-    setToken(null)
-    setUserId(null)
-  }, [])
+  const { token, login, logout, userId } = useAuth()
 
   let routes
   if (token) {

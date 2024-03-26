@@ -16,6 +16,7 @@ async function getUsers(req, res, next) {
 }
 
 async function signup(req, res, next) {
+  
   const validResult = validationResult(req).array()
   if (validResult.length !== 0) {
     return next(new HttpError("Please check your input data", 400))
@@ -37,31 +38,39 @@ async function signup(req, res, next) {
   
   let user
   let token
+  let expire = new Date(new Date().getTime() + 1000 * 3600)
   try {
+    if(!req?.file?.path) {
+      throw new Error("No image for user")
+    }
     let hashPassword = bcrypt.hashSync(password, 12)
     const newUser = new User({ name, email, password: hashPassword, image: req.file.path, places: [] });
     user = await newUser.save()
     token = jwt.sign({
       userId: user._id.toString(),
-      email: user.email
+      email: user.email,
+      expire
     }, "secret_key_he_he_ho_ho", {expiresIn: "1h"})
+
   } catch (error) {
     console.error("" + error.message)
     return next(new HttpError("Sign-up false, please try again !", 500))
   }
 
-  res.status(201).json({userId: user._id, email, token});
+  res.status(201).json({userId: user._id, email, token, expire});
 }
 
 async function login(req, res, next) {
   const { email, password } = req.body;
+  let expire = new Date(new Date().getTime() + 1000 * 3600)
   let user
   let token
   try {
     user = await User.findOne({email})
     token = jwt.sign({
       userId: user._id.toString(),
-      email: user.email
+      email: user.email,
+      expire
     }, "secret_key_he_he_ho_ho", {expiresIn: "1h"})
   } catch (error) {
     console.error(error)
@@ -73,7 +82,15 @@ async function login(req, res, next) {
     return next(new HttpError("Wrong email or password", 401));
   }
 
-  res.json({ message: "Login successful", userId: user._id, email, token });
+  res.json({ message: "Login successful", userId: user._id, email, token, expire });
 }
 
-module.exports = { getUsers, signup, login };
+function checkValidToken(req, res, next) {
+
+  if(req.body.userId !== req.userData.userId || req.body.expire !== req.userData.expire) {
+    return next(new HttpError("Token invalid !!!! xxxx", 403))
+  }
+  res.status(200).json({message: "Token is valid"})
+}
+
+module.exports = { getUsers, signup, login, checkValidToken };
