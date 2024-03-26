@@ -13,24 +13,19 @@ const validPlaceRule = [
     .withMessage("Description must be at least 5 characters"),
   check("address").trim().notEmpty().withMessage("Address must not be empty"),
   // check("imageUrl").isURL().withMessage("Image url not valid an URL"),
-  check("creator").trim().notEmpty().withMessage("Creator must not be empty"),
+  // check("creator").trim().notEmpty().withMessage("Creator must not be empty"),
 ];
 
 router.get("/", placeControllers.getAllPlace);
-
 router.get("/:pid", placeControllers.getPlaceById);
-
 router.get("/user/:uid", placeControllers.getPlacesByUserId);
-
 router.use(checkAuth)
-
 router.post(
   "/",
   fileUpload.single("image"),
   validPlaceRule,
   placeControllers.createPlace
 );
-
 router.patch(
   "/:pid",
   [
@@ -42,7 +37,6 @@ router.patch(
   ],
   placeControllers.updatePlace
 );
-
 router.delete("/:pid", placeControllers.deletePlace);
 
 module.exports = router;

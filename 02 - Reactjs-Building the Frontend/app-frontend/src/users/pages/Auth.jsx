@@ -20,7 +20,6 @@ function Auth() {
   const [isLoginMode, setIsLoginMode] = useState(true)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
   const navigate = useNavigate()
-
   const [formState, inputHandler, setFormData] = useForm({
     email: {
       value: '',
@@ -46,7 +45,7 @@ function Auth() {
         }
       )
       if (responseData) {
-        auth.login(responseData.userId, responseData.token)
+        auth.login(responseData.userId, responseData.token, responseData.expire)
         navigate('/')
       }
     } else {
@@ -61,7 +60,7 @@ function Auth() {
         formData
       )
       if (responseData) {
-        auth.login(responseData.userId, responseData.token)
+        auth.login(responseData.userId, responseData.token, responseData.expire)
         navigate('/')
       }
     }

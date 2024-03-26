@@ -6,9 +6,9 @@ function checkAuth(req, res, next) {
     }
     try {
         const token = req.headers.authorization.split(" ")[1]
-        if(!token) {throw new Error()}
+        if(!token) {throw new Error("Token invalid !")}
         const decodeToken = jwt.verify(token, "secret_key_he_he_ho_ho")
-        req.userData = {userId: decodeToken.userId}
+        req.userData = {userId: decodeToken.userId, expire: decodeToken.expire}
         next()
     } catch (error) {
         return next(new HttpError("Fail to Authorization", 401))
