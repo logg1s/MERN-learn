@@ -36,8 +36,7 @@ app.use(() => {
 
 app.use((err, req, res, next) => {
     if(req.file) {
-        fs.unlinkSync(req.file.path, (err) => {
-            console.error(err.message)
+        fs.unlink(req.file.path, () => {
         })
     }
     res.status(err.code || 500).json({message: err.message || "An error"})
@@ -52,5 +51,5 @@ mongoose.connect("mongodb+srv://lrng159:lrng159@cluster0.pvbymxp.mongodb.net/?re
     console.log("MongoDB connected")
     console.log("==================================")
 }).catch(err => {
-    console.error(err)
+    console.error("Connect mongoDB: " + err)
 })
