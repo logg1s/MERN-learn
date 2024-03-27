@@ -18,7 +18,7 @@ function UsersList(props) {
                 id={user.id}
                 image={user.image}
                 name={user.name}
-                placeCount={user.places.length}
+                placeCount={user.places}
             />
         })}
     </ul>
