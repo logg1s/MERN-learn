@@ -8,7 +8,7 @@ function UsersItem(props) {
           <Card className='user-item__content'>
             <Link to={`/${props.id}/places`}>
               <div className='user-item__image'>
-                  <Avatar image={'http://localhost:8000/' + props.image} alt={props.name} />
+                  <Avatar image={`${import.meta.env.VITE_HOST_BACKEND}/` + props.image} alt={props.name} />
               </div>
 
               <div className="user-item__info">

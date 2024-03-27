@@ -34,7 +34,7 @@ function Auth() {
     event.preventDefault()
     if (isLoginMode) {
       const responseData = await sendRequest(
-        'http://localhost:8000/api/users/login',
+        `${import.meta.env.VITE_API_ENDPOINT}/users/login`,
         'POST',
         JSON.stringify({
           email: formState.inputs.email.value,
@@ -55,7 +55,7 @@ function Auth() {
       formData.append('password', formState.inputs.password.value)
       formData.append('image', formState.inputs.image.value)
       const responseData = await sendRequest(
-        'http://localhost:8000/api/users/signup',
+        `${import.meta.env.VITE_API_ENDPOINT}/users/signup`,
         'POST',
         formData
       )

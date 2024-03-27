@@ -49,7 +49,7 @@ function NewPlace() {
       formData.append('description', formState.inputs.description.value)
       formData.append('address', formState.inputs.address.value)
       formData.append('image', formState.inputs.image.value)
-      await sendRequest('http://localhost:8000/api/places', 'POST', formData, {
+      await sendRequest(`${import.meta.env.VITE_API_ENDPOINT}/places`, 'POST', formData, {
         Authorization: 'Bearer ' + auth.token
       })
       navigate('/' + auth.userId + '/places')

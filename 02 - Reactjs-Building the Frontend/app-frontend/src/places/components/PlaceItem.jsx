@@ -23,7 +23,7 @@ function PlaceItem(props) {
     setShowConfirmModal(false)
     try {
       await sendRequest(
-        `http://localhost:8000/api/places/${props.id}`,
+        `${import.meta.env.VITE_API_ENDPOINT}/places/${props.id}`,
         'DELETE',
         {},
         {
@@ -78,9 +78,9 @@ function PlaceItem(props) {
         <Card className="place-item__content">
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="place-item__image">
-            <Link to={`http://localhost:8000/${props.image}`}>
+            <Link to={`${import.meta.env.VITE_HOST_BACKEND}/${props.image}`}>
               <img
-                src={`http://localhost:8000/${props.image}`}
+                src={`${import.meta.env.VITE_HOST_BACKEND}/${props.image}`}
                 alt={props.title}
               />
             </Link>

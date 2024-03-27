@@ -14,7 +14,7 @@ function UserPlaces() {
     const fetchPlaces = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:8000/api/places/user/${userId}`
+          `${import.meta.env.VITE_API_ENDPOINT}/places/user/${userId}`
         )
         setLoadedPlaces(responseData)
       } catch (error) {

@@ -7,7 +7,7 @@ function checkAuth(req, res, next) {
     try {
         const token = req.headers.authorization.split(" ")[1]
         if(!token) {throw new Error("Token invalid !")}
-        const decodeToken = jwt.verify(token, "secret_key_he_he_ho_ho")
+        const decodeToken = jwt.verify(token, process.env.JWT_SECRET_KEY)
         req.userData = {userId: decodeToken.userId, expire: decodeToken.expire}
         next()
     } catch (error) {

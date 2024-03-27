@@ -11,7 +11,7 @@ export default function useAuth() {
   }, [])
   const login = useCallback(
     (uid, token, exprTime) => {
-      fetch('http://localhost:8000/api/users/checkValidToken', {
+      fetch(`${import.meta.env.VITE_API_ENDPOINT}/users/checkValidToken`, {
         method: 'POST',
         body: JSON.stringify({
           userId: uid,
