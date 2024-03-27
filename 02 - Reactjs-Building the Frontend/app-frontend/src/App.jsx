@@ -1,12 +1,14 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Users from './users/pages/Users'
-import UserPlaces from './places/pages/UserPlaces'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import MainNavigation from './shared/components/Navigation/MainNavigation'
-import NewPlace from './places/pages/NewPlace'
-import UpdatePlace from './places/pages/UpdatePlace'
-import Auth from './users/pages/Auth'
 import { AuthContext } from './shared/context/auth-context'
 import useAuth from './shared/hooks/auth-hook'
+import { lazy, Suspense } from 'react'
+import LoadingSpinner from './shared/components/UIElements/LoadingSpinner'
+const Users = lazy(() => import('./users/pages/Users'))
+const UserPlaces = lazy(() => import('./places/pages/UserPlaces'))
+const NewPlace = lazy(() => import('./places/pages/NewPlace'))
+const UpdatePlace = lazy(() => import('./places/pages/UpdatePlace'))
+const Auth = lazy(() => import('./users/pages/Auth'))
 
 function App() {
   const { token, login, logout, userId } = useAuth()
@@ -40,15 +42,19 @@ function App() {
         userId: userId
       }}
     >
-      <BrowserRouter>
+      <HashRouter>
         <MainNavigation />
         <main>
-          <Routes>
-            {routes}
-            <Route path="*" element={<Navigate to={'/'} />} />
-          </Routes>
+          <Suspense fallback={
+            <div className='center'><LoadingSpinner /></div>
+          }>
+            <Routes>
+              {routes}
+              <Route path="*" element={<Navigate to={'/'} />} />
+            </Routes>
+          </Suspense>
         </main>
-      </BrowserRouter>
+      </HashRouter>
     </AuthContext.Provider>
   )
 }

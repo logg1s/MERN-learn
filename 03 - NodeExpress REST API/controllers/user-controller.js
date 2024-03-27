@@ -50,7 +50,7 @@ async function signup(req, res, next) {
       userId: user._id.toString(),
       email: user.email,
       expire
-    }, "secret_key_he_he_ho_ho", {expiresIn: "1h"})
+    }, process.env.JWT_SECRET_KEY, {expiresIn: "1h"})
 
   } catch (error) {
     console.error("" + error.message)
@@ -71,10 +71,10 @@ async function login(req, res, next) {
       userId: user._id.toString(),
       email: user.email,
       expire
-    }, "secret_key_he_he_ho_ho", {expiresIn: "1h"})
+    }, process.env.JWT_SECRET_KEY, {expiresIn: "1h"})
   } catch (error) {
     console.error(error)
-    return next(new HttpError("Could not login, please try again !", 500))
+    return next(new HttpError("Account not exist. Please sign-up !", 500))
   }
 
   let isCorrectPassword = bcrypt.compareSync(password, user.password)

@@ -32,10 +32,8 @@ app.use((err, req, res, next) => {
 })
 
 
-mongoose.connect("mongodb+srv://lrng159:lrng159@cluster0.pvbymxp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
-    dbName: "mern_learn"
-}).then(() => {
-    app.listen(8000)
+mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.pvbymxp.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority&appName=Cluster0`).then(() => {
+    app.listen(process.env.PORT || 8000)
     console.log("MongoDB connected")
     console.log("==================================")
 }).catch(err => {
