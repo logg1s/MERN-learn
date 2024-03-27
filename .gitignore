@@ -136,3 +136,6 @@ nodemon.*
 
 #vite build
 dist
+#deploy
+*firebase*
+
