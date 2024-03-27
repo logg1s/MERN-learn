@@ -43,7 +43,7 @@ async function getPlacesByUserId(req, res, next) {
 async function insertPlace(req, res, next) {
   const validResult = validationResult(req).array();
   if (validResult.length !== 0) {
-    return next(new HttpError("Please check your input data"), 401);
+    return res.status(400).json({ errors: validResult, message: 'Please check your input data' });
   }
 
   const {title, description, address, creator, imageUrl} = req.body
@@ -100,7 +100,7 @@ async function insertPlace(req, res, next) {
 async function updatePlace(req, res, next) {
   const validResult = validationResult(req).array();
   if (validResult.length !== 0) {
-    return next(new HttpError("Please check your input data"), 401);
+    return res.status(400).json({ errors: validResult, message: 'Please check your input data' });
   }
   const placeId = req.params.pid;
   let updatedPlace;

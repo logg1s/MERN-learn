@@ -50,20 +50,19 @@ function Auth() {
         navigate('/')
       }
     } else {
-      let formData = new FormData()
-      formData.append('name', formState.inputs.name.value)
-      formData.append('email', formState.inputs.email.value)
-      formData.append('password', formState.inputs.password.value)
-      formData.append('image', formState.inputs.image.value)
       const responseData = await sendRequest(
         'http://localhost:8000/api/users/signup',
         'POST',
-        formData
+        JSON.stringify({
+          name: formState.inputs.name.value,
+          email: formState.inputs.email.value,
+          password: formState.inputs.password.value
+        }),
+        {
+          'Content-Type': 'application/json'
+        }
       )
-      if (responseData) {
-        auth.login(responseData.user._id)
-        navigate('/')
-      }
+      responseData && auth.login(responseData.user._id)
     }
   }
 
