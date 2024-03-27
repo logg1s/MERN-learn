@@ -73,7 +73,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
+.env.*
 .env.development.local
 .env.test.local
 .env.production.local
@@ -127,3 +127,14 @@ out
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# images
+uploads
+
+#nodemon
+nodemon.*
+
+#vite build
+dist
+#deploy
+*firebase*

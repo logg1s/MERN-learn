@@ -1,13 +1,11 @@
 import './Map.css'
-import { Link } from 'react-router-dom'
 function Map(props) {
   return (
-    <>
-      <h1>No API :VVV</h1>
-      <Link
-        to={`https://www.google.com/maps/place/${props.location.lat}, ${props.location.lng}`} target="_blank"
-      >Redirect to Google Maps</Link>
-    </>
+    <iframe
+      className="map"
+      src={`https://maps.google.com/maps?width=100%&height=100%&hl=vi&q=${props.location.lat}, ${props.location.lng} (Map)&t=&z=12&ie=UTF8&iwloc=B&output=embed`}
+    >
+    </iframe>
   )
 }
 

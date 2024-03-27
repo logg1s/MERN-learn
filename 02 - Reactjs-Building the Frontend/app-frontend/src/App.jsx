@@ -1,54 +1,60 @@
-import { BrowserRouter, Routes, Route, redirect } from 'react-router-dom'
-import Users from './users/pages/Users'
-import UserPlaces from './places/pages/UserPlaces'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import MainNavigation from './shared/components/Navigation/MainNavigation'
-import NewPlace from './places/pages/NewPlace'
-import UpdatePlace from './places/pages/UpdatePlace'
-import Auth from './users/pages/Auth'
 import { AuthContext } from './shared/context/auth-context'
-import { useCallback, useState } from 'react'
+import useAuth from './shared/hooks/auth-hook'
+import { lazy, Suspense } from 'react'
+import LoadingSpinner from './shared/components/UIElements/LoadingSpinner'
+const Users = lazy(() => import('./users/pages/Users'))
+const UserPlaces = lazy(() => import('./places/pages/UserPlaces'))
+const NewPlace = lazy(() => import('./places/pages/NewPlace'))
+const UpdatePlace = lazy(() => import('./places/pages/UpdatePlace'))
+const Auth = lazy(() => import('./users/pages/Auth'))
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const login = useCallback(() => {
-    setIsLoggedIn(true)
-  }, [])
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false)
-  }, [])
+  const { token, login, logout, userId } = useAuth()
 
   let routes
-  if (isLoggedIn) {
+  if (token) {
     routes = (
-      <Routes>
-        <Route path="/">
-          <Route index element={<Users />} />
-          <Route path=":userId/places" element={<UserPlaces />} />
-          <Route path="places/new" element={<NewPlace />} />
-          <Route path="places/:placeId" element={<UpdatePlace />} />
-        </Route>
-      </Routes>
+      <Route path="/">
+        <Route index element={<Users />} />
+        <Route path=":userId/places" element={<UserPlaces />} />
+        <Route path="places/new" element={<NewPlace />} />
+        <Route path="places/:placeId" element={<UpdatePlace />} />
+      </Route>
     )
   } else {
     routes = (
-      <Routes>
-        <Route path="/">
-          <Route index element={<Users />} />
-          <Route path=":userId/places" element={<UserPlaces />} />
-          <Route path="auth" element={<Auth />} />
-        </Route>
-      </Routes>
+      <Route path="/">
+        <Route index element={<Users />} />
+        <Route path=":userId/places" element={<UserPlaces />} />
+        <Route path="auth" element={<Auth />} />
+      </Route>
     )
   }
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        login: login,
+        logout: logout,
+        userId: userId
+      }}
     >
-      <BrowserRouter>
+      <HashRouter>
         <MainNavigation />
-        <main>{routes}</main>
-      </BrowserRouter>
+        <main>
+          <Suspense fallback={
+            <div className='center'><LoadingSpinner /></div>
+          }>
+            <Routes>
+              {routes}
+              <Route path="*" element={<Navigate to={'/'} />} />
+            </Routes>
+          </Suspense>
+        </main>
+      </HashRouter>
     </AuthContext.Provider>
   )
 }

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Place = new mongoose.Schema({
     title: {type: String, required: true},
     description:  {type: String, required: true},
-    imageUrl:  {type: String, required: true},
+    imageUrl:  String,
     address:  {type: String, required: true},
     location: {
       lat:  {type: Number, required: true},
