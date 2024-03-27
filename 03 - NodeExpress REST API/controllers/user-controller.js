@@ -16,9 +16,9 @@ async function getUsers(req, res, next) {
 async function signup(req, res, next) {
   const validResult = validationResult(req).array()
   if (validResult.length !== 0) {
-    return next(new HttpError("Please check your input data", 400))
+     return res.status(400).json({errors: validResult, message: 'Please check your input data'})
   }
-  const { name, email, password } = req.body;
+  const { name, email, password, image } = req.body;
 
   let existingUser;
   try {
@@ -32,7 +32,7 @@ async function signup(req, res, next) {
     return next(new HttpError("User existing, please login !", 500));
   }
 
-  const newUser = new User({ name, email, password, image: req.file.path, places: [] });
+  const newUser = new User({ name, email, password, image: "https://lh3.googleusercontent.com/ogw/AF2bZyjF4idx4jq1VaVIYfaCBTwony-a0Vql5rBQoN4uUg=s64-c-mo", places: [] });
   let result
   try {
     result = await newUser.save()
