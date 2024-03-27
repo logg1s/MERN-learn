@@ -33,15 +33,15 @@ async function signup(req, res, next) {
   }
 
   const newUser = new User({ name, email, password, image: req.file.path, places: [] });
-  let user
+  let result
   try {
-    user = await newUser.save()
+    result = await newUser.save()
   } catch (error) {
     console.error(error)
     return next(new HttpError("Sign-up false, please try again !", 500))
   }
 
-  res.status(201).json({user});
+  res.status(201).json(result);
 }
 
 async function login(req, res, next) {

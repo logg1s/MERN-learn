@@ -38,7 +38,7 @@ function UserPlaces() {
         </div>
       )}
       {!isLoading && loadedPlaces && (
-        <PlaceList userId={userId} items={loadedPlaces} onDeletePlace={placeDeleteHandler} />
+        <PlaceList items={loadedPlaces} onDeletePlace={placeDeleteHandler} />
       )}
     </>
   )

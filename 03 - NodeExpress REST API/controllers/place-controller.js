@@ -4,7 +4,6 @@ const getCoordsForAddress = require("../util/location");
 const Place = require("../models/places");
 const Users = require("../models/users");
 const mongoose = require("mongoose")
-const fs = require('fs')
 
 async function getAllPlace(req, res, next) {
   let places;
@@ -47,7 +46,7 @@ async function insertPlace(req, res, next) {
     return next(new HttpError("Please check your input data"), 401);
   }
 
-  const {title, description, address, creator} = req.body
+  const {title, description, address, creator, imageUrl} = req.body
 
   let coord;
   try {
@@ -75,7 +74,7 @@ async function insertPlace(req, res, next) {
   const createdPlace = new Place({
     title,
     description,
-    imageUrl: req.file.path,
+    imageUrl: imageUrl || "https://thainguyencity.gov.vn/upload/news/2021/07/36132/image/gioithieuchungvetinhthainguyen-04%20(2)%20(FILEminimizer).jpg",
     address, 
     location: {
       lat: coord.features[0].properties.lat,
@@ -124,7 +123,6 @@ async function updatePlace(req, res, next) {
 async function deletePlace(req, res, next) {
   const placeId = req.params.pid;
 
-
   try {
     const sess = await mongoose.startSession()
     await sess.startTransaction()
@@ -133,12 +131,6 @@ async function deletePlace(req, res, next) {
     user.places.pull(place)
     await user.save({session: sess})
     await sess.commitTransaction()
-    
-    const imagePath = place.imageUrl
-    fs.unlinkSync(imagePath, (err) => {
-      throw new Error(err)
-    })
-    
   } catch (error) {
     console.error(error)
     return next(new HttpError("Could not delete this place !", 500));
