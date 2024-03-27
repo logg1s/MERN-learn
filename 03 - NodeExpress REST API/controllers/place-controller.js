@@ -74,7 +74,7 @@ async function insertPlace(req, res, next) {
   const createdPlace = new Place({
     title,
     description,
-    imageUrl: imageUrl || "https://thainguyencity.gov.vn/upload/news/2021/07/36132/image/gioithieuchungvetinhthainguyen-04%20(2)%20(FILEminimizer).jpg",
+    imageUrl,
     address, 
     location: {
       lat: coord.features[0].properties.lat,

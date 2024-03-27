@@ -14,8 +14,8 @@ function UsersList(props) {
     <ul className='users-list'>
         {props.items.map(user => {
             return <UsersItem
-                key={user._id}
-                id={user._id}
+                key={user.id}
+                id={user.id}
                 image={user.image}
                 name={user.name}
                 placeCount={user.places.length}

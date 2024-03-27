@@ -47,19 +47,19 @@ async function signup(req, res, next) {
 async function login(req, res, next) {
   const { email, password } = req.body;
 
-  let user
+  let account
   try {
-    user = await User.findOne({email})
+    account = await User.findOne({email})
   } catch (error) {
     console.error(error)
     return next(new HttpError("Could not login, please try again !", 500))
   }
 
-  if (!user || user.password !== password) {
+  if (!account || account.password !== password) {
     return next(new HttpError("Wrong email or password", 401));
   }
 
-  res.json({ message: "Login successful", user });
+  res.json({ message: "Login successful" });
 }
 
 module.exports = { getUsers, signup, login };
