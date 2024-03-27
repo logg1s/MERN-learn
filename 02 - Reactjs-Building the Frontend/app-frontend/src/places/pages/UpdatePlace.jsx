@@ -122,8 +122,8 @@ function UpdatePlace() {
             element="textarea"
             type="text"
             label="Description"
-            validators={[VALIDATOR_MINLENGTH(6)]}
-            errorText="Please aenter a valid description (at least 6 characters)"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Please aenter a valid description (at least 5 characters)"
             onInput={inputHandler}
             initialValue={formState.inputs.description.value}
             initialValid={formState.inputs.description.isValid}

@@ -9,7 +9,7 @@ function PlaceList(props) {
       <div className="place-list center">
         <Card>
           <h2>No place found. May be create one?</h2>
-          <Button to="/places/new">ADD PLACE</Button>
+          <Button to="/places/new">Share Place</Button>
         </Card>
       </div>
     )
@@ -25,7 +25,7 @@ function PlaceList(props) {
           title={place.title}
           description={place.description}
           address={place.address}
-          creatorId={place.creator._id}
+          creatorId={place.creator}
           coordinates={place.location}
           onDelete = {props.onDeletePlace}
         />
