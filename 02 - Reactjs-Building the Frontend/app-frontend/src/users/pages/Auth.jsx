@@ -12,9 +12,8 @@ import { AuthContext } from '../../shared/context/auth-context'
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner'
 import ErrorModal from '../../shared/components/UIElements/ErrorModal'
 import { useHttpClient } from '../../shared/hooks/http-hook'
-import { useNavigate } from 'react-router-dom'
-import ImageUpload from '../../shared/components/FormElements/ImageUpload'
 import './Auth.css'
+import { useNavigate } from 'react-router-dom'
 function Auth() {
   const auth = useContext(AuthContext)
   const [isLoginMode, setIsLoginMode] = useState(true)
@@ -71,8 +70,7 @@ function Auth() {
       setFormData(
         {
           ...formState.inputs,
-          name: undefined,
-          image: undefined
+          name: undefined
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       )
@@ -83,10 +81,6 @@ function Auth() {
           name: {
             value: '',
             isValid: false
-          },
-          image: {
-            value: null,
-            isvalid: false
           }
         },
         false
@@ -114,9 +108,7 @@ function Auth() {
               onInput={inputHandler}
             />
           )}
-          {!isLoginMode && (
-            <ImageUpload center id="image" onInput={inputHandler} />
-          )}
+
           <Input
             id="email"
             element="input"
