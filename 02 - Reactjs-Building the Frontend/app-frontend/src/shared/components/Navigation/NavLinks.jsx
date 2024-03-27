@@ -14,10 +14,10 @@ function NavLinks(props) {
   return (
     <ul className="nav-links">
       <li>{navLink('/', 'ALL USERS')}</li>
-      {auth.isLoggedIn && <li>{navLink(`/${auth.userId}/places`, 'MY PLACES')}</li>}
+      {auth.isLoggedIn && <li>{navLink('/u1/places', 'MY PLACES')}</li>}
 
-      {auth.isLoggedIn && <li>{navLink('/places/new', 'ADD PLACE')}</li>}
-      {!auth.isLoggedIn && <li>{navLink('/auth', 'LOGIN / SIGN UP')}</li>}
+      {auth.isLoggedIn && <li>{navLink('/places/new', 'ADD PLACES')}</li>}
+      {!auth.isLoggedIn && <li>{navLink('/auth', 'AUTHENTICATE')}</li>}
       {auth.isLoggedIn && (
         <li>
           <button onClick={auth.logout}>LOGOUT</button>

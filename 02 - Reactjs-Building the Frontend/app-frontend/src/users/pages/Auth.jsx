@@ -13,12 +13,10 @@ import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner'
 import ErrorModal from '../../shared/components/UIElements/ErrorModal'
 import { useHttpClient } from '../../shared/hooks/http-hook'
 import './Auth.css'
-import { useNavigate } from 'react-router-dom'
 function Auth() {
   const auth = useContext(AuthContext)
   const [isLoginMode, setIsLoginMode] = useState(true)
   const { isLoading, error, sendRequest, clearError } = useHttpClient()
-  const navigate = useNavigate()
 
   const [formState, inputHandler, setFormData] = useForm({
     email: {
@@ -44,10 +42,7 @@ function Auth() {
           'Content-Type': 'application/json'
         }
       )
-      if (responseData) {
-        auth.login(responseData.user._id)
-        navigate('/')
-      }
+      responseData && auth.login(responseData.user._id)
     } else {
       const responseData = await sendRequest(
         'http://localhost:8000/api/users/signup',
