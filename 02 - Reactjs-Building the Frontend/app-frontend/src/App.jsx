@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Users from './users/pages/Users'
 import UserPlaces from './places/pages/UserPlaces'
 import MainNavigation from './shared/components/Navigation/MainNavigation'
@@ -24,24 +24,20 @@ function App() {
   let routes
   if (isLoggedIn) {
     routes = (
-      <Routes>
-        <Route path="/">
-          <Route index element={<Users />} />
-          <Route path=":userId/places" element={<UserPlaces />} />
-          <Route path="places/new" element={<NewPlace />} />
-          <Route path="places/:placeId" element={<UpdatePlace />} />
-        </Route>
-      </Routes>
+      <Route path="/">
+        <Route index element={<Users />} />
+        <Route path=":userId/places" element={<UserPlaces />} />
+        <Route path="places/new" element={<NewPlace />} />
+        <Route path="places/:placeId" element={<UpdatePlace />} />
+      </Route>
     )
   } else {
     routes = (
-      <Routes>
-        <Route path="/">
-          <Route index element={<Users />} />
-          <Route path=":userId/places" element={<UserPlaces />} />
-          <Route path="auth" element={<Auth />} />
-        </Route>
-      </Routes>
+      <Route path="/">
+        <Route index element={<Users />} />
+        <Route path=":userId/places" element={<UserPlaces />} />
+        <Route path="auth" element={<Auth />} />
+      </Route>
     )
   }
   return (
@@ -55,7 +51,12 @@ function App() {
     >
       <BrowserRouter>
         <MainNavigation />
-        <main>{routes}</main>
+        <main>
+          <Routes>
+            {routes}
+            <Route path="*" element={<Navigate to={'/'} />} />
+          </Routes>
+        </main>
       </BrowserRouter>
     </AuthContext.Provider>
   )
